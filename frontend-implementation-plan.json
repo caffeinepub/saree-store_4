@@ -1,0 +1,120 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Redesign website color scheme to a fresh, unique palette",
+  "requirements": [
+    {
+      "id": "REQ-14",
+      "summary": "Replace the current Indian couture jewel-tone color scheme with a completely different and unique visual palette (e.g., cool emerald and champagne, dusky rose and slate, or midnight indigo and pearl) applied consistently across all pages and components",
+      "acceptanceCriteria": [
+        "All CSS custom property color tokens in frontend/src/index.css and frontend/index.css are updated to the new palette — no remnants of the old crimson/gold/ivory values remain as primary brand colors.",
+        "Tailwind config color tokens (gold, crimson, ivory, maroon) are replaced or remapped to the new palette values in tailwind.config.js.",
+        "Header, Footer, hero banner, category tiles, product cards, cart drawer, chatbox, offers page, and admin page all visibly reflect the new color scheme.",
+        "The new palette is visually cohesive and distinct from the previous deep crimson/gold/ivory theme.",
+        "No page or component falls back to the old color tokens as its dominant color."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Replace all CSS custom property color tokens with the new emerald and champagne palette. Update light mode variables to use deep emerald green (#047857 or similar), champagne/pearl tones (#F5E6D3, #FFF8E7), and complementary accent colors. Update dark mode variables to use muted emerald, dark champagne, and appropriate dark-theme variants. Remove or remap all references to the old crimson/gold/ivory jewel-tone palette. Ensure background, foreground, card, border, input, ring, primary, secondary, accent, and muted color families all reflect the new scheme."
+        },
+        {
+          "path": "frontend/index.css",
+          "operation": "modify",
+          "description": "Update all CSS custom property color tokens in the global stylesheet to match the new emerald and champagne palette defined in frontend/src/index.css. Replace light and dark mode color variables for sidebar, borders, and any other design tokens to ensure consistency with the new theme."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Replace the OKLCH-based color tokens (gold, crimson, ivory, maroon) in the Tailwind theme extension with new color tokens matching the emerald and champagne palette. Define new semantic color names (e.g., 'emerald', 'champagne', 'pearl', 'sage') with appropriate shades (50-950) using OKLCH values that align with the new palette. Remove or remap old token names to prevent fallback to the previous jewel-tone scheme. Ensure all pages and components that reference these tokens will automatically adopt the new colors."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references (className attributes using old color tokens like 'bg-crimson', 'text-gold', 'border-ivory') to use the new palette tokens defined in tailwind.config.js. Ensure the navigation bar, logo area, search form, cart icon, and login button all visibly reflect the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/components/Footer.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references to use the new palette tokens. Ensure the footer background, text colors, link hover states, and divider borders all reflect the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/components/ProductCard.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references (e.g., badge colors, button backgrounds, hover states) to use the new palette tokens. Ensure product card borders, backgrounds, and call-to-action buttons visibly reflect the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/components/CartDrawer.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references to use the new palette tokens. Ensure the cart drawer background, item borders, quantity controls, remove buttons, and subtotal section all reflect the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/components/Chatbox.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references to use the new palette tokens. Ensure the chat widget background, message bubbles, bot/user color differentiation, and input field all reflect the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/components/SuitabilityChecker.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references (e.g., form inputs, button backgrounds, progress bar colors, score labels) to use the new palette tokens. Ensure the suitability checker form and result display reflect the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/components/VirtualTryOn.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references to use the new palette tokens. Ensure the virtual try-on component's form inputs, score display, and browse button all reflect the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references to use the new palette tokens. Wire the new generated hero banner image (frontend/public/assets/generated/saree-hero-banner.dim_1400x600.png) into the hero section to replace the old banner. Update category card colors, new arrivals section backgrounds, and on-offer section styling to reflect the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/pages/SareesPage.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references to use the new palette tokens. Wire the new generated saree category image (frontend/public/assets/generated/saree-category.dim_600x400.png) as the banner image. Ensure search controls, filter buttons, sort dropdowns, and the Virtual Try-On CTA all reflect the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/pages/JewelryPage.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references to use the new palette tokens. Wire the new generated jewelry category image (frontend/public/assets/generated/jewelry-category.dim_600x400.png) as the banner image. Ensure the jewelry category page styling reflects the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/pages/HandbagsPage.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references to use the new palette tokens. Wire the new generated handbag category image (frontend/public/assets/generated/handbag-category.dim_600x400.png) as the banner image. Ensure the handbags category page styling reflects the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/pages/CategoryPage.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references to use the new palette tokens. Ensure the reusable category page component's banner, filter controls, sort dropdowns, and product grid all reflect the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/pages/OffersPage.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references (e.g., sale ribbon colors, banner backgrounds, product card hover states) to use the new palette tokens. Ensure the offers page visibly reflects the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/pages/ProductDetailPage.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references (e.g., badge colors, button backgrounds, tabs, integrated SuitabilityChecker and VirtualTryOn sections) to use the new palette tokens. Ensure the product detail page reflects the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/pages/AdminPage.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references (e.g., form inputs, add/delete button colors, table borders) to use the new palette tokens. Ensure the admin dashboard reflects the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/pages/SearchPage.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references to use the new palette tokens. Ensure the search results page, product grid, and empty-state messages all reflect the new emerald and champagne color scheme."
+        },
+        {
+          "path": "frontend/src/components/AccessDeniedScreen.tsx",
+          "operation": "modify",
+          "description": "Review and update any inline color references to use the new palette tokens. Ensure the access-denied screen background, shield icon color, and link styling reflect the new emerald and champagne color scheme."
+        }
+      ]
+    }
+  ]
+}

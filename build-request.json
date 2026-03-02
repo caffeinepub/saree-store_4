@@ -1,0 +1,50 @@
+{
+  "kind": "build_request",
+  "title": "Redesign website color scheme to a fresh, unique palette",
+  "projectName": "Dali's Boutique",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-14",
+      "text": "Replace the current Indian couture jewel-tone color scheme (deep crimson, gold, ivory) with a completely different and unique visual palette applied consistently across all pages and components. The new palette should feel elegant and fashionable for a boutique experience but distinctly different from the existing scheme — for example, a cool emerald and champagne palette, a dusky rose and slate palette, or a midnight indigo and pearl palette. Update all CSS custom properties in frontend/src/index.css and frontend/index.css, Tailwind color tokens in tailwind.config.js, and any inline color references in components and pages so the entire app reflects the new unified theme, including the Header, Footer, HomePage, CategoryPages, OffersPage, ProductCard, CartDrawer, Chatbox, SuitabilityChecker, VirtualTryOn, AdminPage, and all other UI components.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-recent-4",
+          "msg-recent-6"
+        ],
+        "quotes": [
+          "can u change the websites colours ...different and unique",
+          "CAN U DO THIS"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All CSS custom property color tokens in frontend/src/index.css and frontend/index.css are updated to the new palette — no remnants of the old crimson/gold/ivory values remain as primary brand colors.",
+        "Tailwind config color tokens (gold, crimson, ivory, maroon) are replaced or remapped to the new palette values in tailwind.config.js.",
+        "Header, Footer, hero banner, category tiles, product cards, cart drawer, chatbox, offers page, and admin page all visibly reflect the new color scheme.",
+        "The new palette is visually cohesive and distinct from the previous deep crimson/gold/ivory theme.",
+        "No page or component falls back to the old color tokens as its dominant color."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify files listed in frontend.immutablePaths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
+    "Typography (Playfair Display, Cormorant Garamond, Lato) and overall layout structure should remain intact — only colors change.",
+    "All existing functionality (cart, suitability checker, virtual try-on, admin panel, chatbox) must continue to work after the color update."
+  ],
+  "nonGoals": [
+    "Changing fonts or typography styles.",
+    "Altering page layouts, component structure, or feature logic.",
+    "Adding new pages or features.",
+    "Modifying the backend."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Elegant boutique hero banner with the new cool-toned palette — deep emerald green and champagne/pearl tones, sheer fabric texture overlay, soft ambient lighting, no text (saree-hero-banner.dim_1400x600.png)",
+      "Sarees category tile image in the new palette — emerald and gold-champagne draped fabric close-up (saree-category.dim_600x400.png)",
+      "Jewelry category tile image in the new palette — pearl and emerald gemstone accessories on a dark background (jewelry-category.dim_600x400.png)",
+      "Handbags category tile image in the new palette — champagne and sage toned handbag styling on a soft background (handbag-category.dim_600x400.png)"
+    ],
+    "edits": []
+  }
+}

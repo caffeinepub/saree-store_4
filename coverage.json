@@ -1,0 +1,92 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-03-02T14:14:05.915Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 1,
+    "implemented": 1,
+    "items": [
+      {
+        "id": "REQ-14",
+        "summary": "Replace the current Indian couture jewel-tone color scheme (deep crimson, gold, ivory) with a completely different and unique visual palette applied consistently across all pages and components. The new palette should feel elegant and fashionable for a boutique experience but distinctly different from the existing scheme — for example, a cool emerald and champagne palette, a dusky rose and slate palette, or a midnight indigo and pearl palette. Update all CSS custom properties in frontend/src/index.css and frontend/index.css, Tailwind color tokens in tailwind.config.js, and any inline color references in components and pages so the entire app reflects the new unified theme, including the Header, Footer, HomePage, CategoryPages, OffersPage, ProductCard, CartDrawer, Chatbox, SuitabilityChecker, VirtualTryOn, AdminPage, and all other UI components.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/index.css",
+          "frontend/index.css",
+          "frontend/tailwind.config.js",
+          "frontend/src/components/Header.tsx",
+          "frontend/src/components/Footer.tsx",
+          "frontend/src/components/ProductCard.tsx",
+          "frontend/src/components/CartDrawer.tsx",
+          "frontend/src/components/Chatbox.tsx",
+          "frontend/src/components/SuitabilityChecker.tsx",
+          "frontend/src/components/VirtualTryOn.tsx",
+          "frontend/src/pages/HomePage.tsx",
+          "frontend/src/pages/SareesPage.tsx",
+          "frontend/src/pages/JewelryPage.tsx",
+          "frontend/src/pages/HandbagsPage.tsx",
+          "frontend/src/pages/CategoryPage.tsx",
+          "frontend/src/pages/OffersPage.tsx",
+          "frontend/src/pages/ProductDetailPage.tsx",
+          "frontend/src/pages/AdminPage.tsx",
+          "frontend/src/pages/SearchPage.tsx",
+          "frontend/src/components/AccessDeniedScreen.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/index.css",
+          "frontend/tailwind.config.js",
+          "frontend/src/components/Header.tsx",
+          "frontend/src/components/Footer.tsx",
+          "frontend/src/components/ProductCard.tsx",
+          "frontend/src/components/CartDrawer.tsx",
+          "frontend/src/components/Chatbox.tsx",
+          "frontend/src/components/SuitabilityChecker.tsx",
+          "frontend/src/components/VirtualTryOn.tsx",
+          "frontend/src/pages/HomePage.tsx",
+          "frontend/src/pages/SareesPage.tsx",
+          "frontend/src/pages/CategoryPage.tsx",
+          "frontend/src/pages/OffersPage.tsx",
+          "frontend/src/pages/ProductDetailPage.tsx",
+          "frontend/src/pages/AdminPage.tsx",
+          "frontend/src/pages/SearchPage.tsx",
+          "frontend/src/components/AccessDeniedScreen.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/public/assets/generated/handbag-category.dim_600x400.png",
+    "frontend/public/assets/generated/jewelry-category.dim_600x400.png",
+    "frontend/public/assets/generated/saree-category.dim_600x400.png",
+    "frontend/public/assets/generated/saree-hero-banner.dim_1400x600.png",
+    "frontend/src/components/AccessDeniedScreen.tsx",
+    "frontend/src/components/CartDrawer.tsx",
+    "frontend/src/components/Chatbox.tsx",
+    "frontend/src/components/Footer.tsx",
+    "frontend/src/components/Header.tsx",
+    "frontend/src/components/ProductCard.tsx",
+    "frontend/src/components/SuitabilityChecker.tsx",
+    "frontend/src/components/VirtualTryOn.tsx",
+    "frontend/src/index.css",
+    "frontend/src/pages/AdminPage.tsx",
+    "frontend/src/pages/CategoryPage.tsx",
+    "frontend/src/pages/HomePage.tsx",
+    "frontend/src/pages/OffersPage.tsx",
+    "frontend/src/pages/ProductDetailPage.tsx",
+    "frontend/src/pages/SareesPage.tsx",
+    "frontend/src/pages/SearchPage.tsx",
+    "frontend/tailwind.config.js",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 7,
+  "summary": "An elegant and stylish e-commerce app called Dali's Boutique for selling sarees and accessories (jewelry, handbags) targeted at women. Saree images are uploaded manually by admin. Key features include a saree virtual try-on where users upload their own photo and select a saree to check suitability, a chatbox, an offers page, new arrivals section, jewelry and handbags sections, and an add-to-cart system.",
+  "architectural_notes": [
+    "Admin manually uploads saree images (no automated product ingestion)",
+    "Virtual try-on/suitability checker is a highlighted/core differentiating feature",
+    "App is branded as 'Dali's Boutique'"
+  ],
+  "known_issues": [
+    "'New Collection 2026 / Timeless Elegance' section appears duplicated on the home page"
+  ],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Elegant boutique hero banner with the new cool-toned palette — deep emerald green and champagne/pearl tones, sheer fabric texture overlay, soft ambient lighting, no text (saree-hero-banner.dim_1400x600.png)\n- Sarees category tile image in the new palette — emerald and gold-champagne draped fabric close-up (saree-category.dim_600x400.png)\n- Jewelry category tile image in the new palette — pearl and emerald gemstone accessories on a dark background (jewelry-category.dim_600x400.png)\n- Handbags category tile image in the new palette — champagne and sage toned handbag styling on a soft background (handbag-category.dim_600x400.png)",
+  "existing_features": [
+    {
+      "id": "feature-design-a-stylish-elegant-visual-theme-inspired-by-indian-couture-aesthetics-rich-jewel-tones-deep-crimson-gold-ivory-ornate-typography-and-a-refined-layout-with-soft-textures-and-decorative-accents-apply-this-theme-consistently-across-all-pages-and-components",
+      "title": "Design a stylish, elegant visual theme inspired by Indian couture aesthetics — rich jewel tones (deep crimson, gold, ivory), ornate typography, and a refined layout with soft textures and decorative accents. Apply this theme consistently across all pages and components.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-an-admin-panel-accessible-via-a-protected-admin-route-where-the-admin-can-add-new-products-by-entering-product-details-and-providing-an-image-url-manual-upload-path-admin-can-also-mark-products-as-new-arrivals-or-on-offer-and-manage-existing-listings",
+      "title": "Build an Admin panel (accessible via a protected /admin route) where the admin can add new products by entering product details and providing an image URL (manual upload path). Admin can also mark products as new arrivals or on offer, and manage existing listings.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-home-page-with-a-hero-banner-a-featured-new-arrivals-section-showing-products-flagged-as-new-arrivals-a-current-offers-teaser-strip-and-category-entry-tiles-for-sarees-jewelry-and-handbags",
+      "title": "Create a Home page with a hero banner, a featured New Arrivals section (showing products flagged as new arrivals), a current Offers teaser strip, and category entry tiles for Sarees, Jewelry, and Handbags.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-dedicated-category-pages-for-sarees-jewelry-and-handbags-each-page-lists-all-products-in-that-category-with-product-cards-showing-image-name-price-and-an-add-to-cart-button-include-filters-for-price-range-and-sorting-price-low-high-new-arrivals-first",
+      "title": "Create dedicated category pages for Sarees, Jewelry, and Handbags. Each page lists all products in that category with product cards showing image, name, price, and an 'Add to Cart' button. Include filters for price range and sorting (price low-high, new arrivals first).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-offers-page-that-displays-all-products-flagged-as-isonoffer-true-showing-the-offer-details-original-price-and-a-prominent-discount-badge-layout-should-feel-festive-and-eye-catching",
+      "title": "Create an Offers page that displays all products flagged as isOnOffer=true, showing the offer details, original price, and a prominent discount badge. Layout should feel festive and eye-catching.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-an-add-to-cart-system-users-can-add-products-to-a-cart-stored-in-frontend-state-react-context-or-react-query-cache-a-cart-drawer-sidebar-should-slide-in-from-the-right-showing-cart-items-with-quantities-individual-prices-a-subtotal-and-a-proceed-to-checkout-placeholder-button",
+      "title": "Implement an Add to Cart system. Users can add products to a cart stored in frontend state (React context or React Query cache). A cart drawer/sidebar should slide in from the right, showing cart items with quantities, individual prices, a subtotal, and a 'Proceed to Checkout' placeholder button.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-saree-suitability-checker-feature-on-each-saree-product-detail-page-the-user-inputs-their-skin-tone-fair-wheatish-dusky-dark-body-type-petite-average-plus-and-occasion-casual-wedding-festive-formal-based-on-these-inputs-the-app-displays-a-suitability-score-and-a-personalized-recommendation-message-for-that-specific-saree-using-pre-defined-rule-logic-stored-in-the-frontend",
+      "title": "Build a Saree Suitability Checker feature on each saree product detail page. The user inputs their skin tone (fair, wheatish, dusky, dark), body type (petite, average, plus), and occasion (casual, wedding, festive, formal). Based on these inputs, the app displays a suitability score and a personalized recommendation message for that specific saree (using pre-defined rule logic stored in the frontend).",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-floating-chatbox-widget-visible-on-all-pages-it-opens-as-a-chat-bubble-in-the-bottom-right-corner-messages-from-the-user-are-stored-in-frontend-state-and-pre-programmed-bot-replies-respond-to-common-queries-e-g-shipping-returns-offers-sizing-the-chat-history-persists-during-the-session",
+      "title": "Implement a floating Chatbox widget visible on all pages. It opens as a chat bubble in the bottom-right corner. Messages from the user are stored in frontend state and pre-programmed bot replies respond to common queries (e.g., shipping, returns, offers, sizing). The chat history persists during the session.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-render-the-generated-hero-banner-image-saree-hero-banner-dim-1400x600-png-and-the-category-tile-images-saree-category-dim-600x400-png-jewelry-category-dim-600x400-png-handbag-category-dim-600x400-png-as-static-assets-from-frontend-public-assets-generated",
+      "title": "Render the generated hero banner image (saree-hero-banner.dim_1400x600.png) and the category tile images (saree-category.dim_600x400.png, jewelry-category.dim_600x400.png, handbag-category.dim_600x400.png) as static assets from frontend/public/assets/generated.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-duplicate-new-collection-2026-timeless-elegance-banner-or-section-from-the-home-page-so-it-appears-at-most-once-audit-homepage-tsx-for-any-repeated-rendering-of-this-section-e-g-rendered-twice-via-two-separate-jsx-blocks-or-component-calls-and-eliminate-the-duplicate-keeping-only-a-single-instance",
+      "title": "Remove the duplicate 'New Collection 2026 / Timeless Elegance' banner or section from the Home page so it appears at most once. Audit HomePage.tsx for any repeated rendering of this section (e.g., rendered twice via two separate JSX blocks or component calls) and eliminate the duplicate, keeping only a single instance.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-saree-virtual-try-on-feature-accessible-from-each-saree-product-detail-page-and-or-the-saree-category-page-the-user-selects-a-saree-from-the-available-listings-and-uploads-a-photo-of-themselves-the-frontend-then-displays-the-uploaded-photo-alongside-the-saree-image-and-uses-the-existing-suitabilityrules-ts-logic-color-fabric-occasion-scoring-to-render-a-suitability-score-and-a-personalized-recommendation-message-the-image-upload-must-be-handled-entirely-on-the-frontend-no-backend-storage-use-a-filereader-object-url-to-preview-the-uploaded-image-in-browser-present-results-in-a-visually-styled-panel-consistent-with-the-existing-indian-couture-theme",
+      "title": "Build a Saree Virtual Try-On feature accessible from each saree product detail page and/or the saree category page. The user selects a saree from the available listings and uploads a photo of themselves. The frontend then displays the uploaded photo alongside the saree image and uses the existing suitabilityRules.ts logic (color, fabric, occasion scoring) to render a suitability score and a personalized recommendation message. The image upload must be handled entirely on the frontend (no backend storage); use a FileReader / object URL to preview the uploaded image in-browser. Present results in a visually styled panel consistent with the existing Indian couture theme.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-rebrand-the-application-name-from-saree-store-used-in-index-html-page-title-header-logo-text-and-footer-brand-name-to-dali-s-boutique-across-all-frontend-files-where-the-store-name-appears",
+      "title": "Rebrand the application name from 'Saree Store' (used in index.html page title, Header logo text, and Footer brand name) to 'Dali's Boutique' across all frontend files where the store name appears.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-indian-couture-jewel-tone-color-scheme-deep-crimson-gold-ivory-with-a-completely-different-and-unique-visual-palette-applied-consistently-across-all-pages-and-components-the-new-palette-should-feel-elegant-and-fashionable-for-a-boutique-experience-but-distinctly-different-from-the-existing-scheme-for-example-a-cool-emerald-and-champagne-palette-a-dusky-rose-and-slate-palette-or-a-midnight-indigo-and-pearl-palette-update-all-css-custom-properties-in-frontend-src-index-css-and-frontend-index-css-tailwind-color-tokens-in-tailwind-config-js-and-any-inline-color-references-in-components-and-pages-so-the-entire-app-reflects-the-new-unified-theme-including-the-header-footer-homepage-categorypages-offerspage-productcard-cartdrawer-chatbox-suitabilitychecker-virtualtryon-adminpage-and-all-other-ui-components",
+      "title": "Replace the current Indian couture jewel-tone color scheme (deep crimson, gold, ivory) with a completely different and unique visual palette applied consistently across all pages and components. The new palette should feel elegant and fashionable for a boutique experience but distinctly different from the existing scheme — for example, a cool emerald and champagne palette, a dusky rose and slate palette, or a midnight indigo and pearl palette. Update all CSS custom properties in frontend/src/index.css and frontend/index.css, Tailwind color tokens in tailwind.config.js, and any inline color references in components and pages so the entire app reflects the new unified theme, including the Header, Footer, HomePage, CategoryPages, OffersPage, ProductCard, CartDrawer, Chatbox, SuitabilityChecker, VirtualTryOn, AdminPage, and all other UI components.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Saree virtual try-on / suitability checker feature for users to see if a saree suits them",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Chatbox/live chat support feature",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Offers/promotions page to showcase deals",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "New Arrivals section highlighting latest products",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Jewelry section with product listings",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Handbags section with product listings",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add to cart functionality",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Manual image upload for sarees by admin",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Stylish and elegant UI layout for the entire app",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Build a backend data model and API for products with the following types: Saree, Jewelry, and Handbag. Each product must store: id, name, category (saree | jewelry | handbag), price, description, imageUrl, isNewArrival (bool), isOnOffer (bool), offerDetails (optional text), and stock quantity.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Virtual try-on: user selects a saree and uploads their own photo to check if the saree suits them (image-based suitability check)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Remove duplicate 'New Collection 2026 / Timeless Elegance' banner/section from home page — show it only once",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Change the website color scheme to something different and unique from the current Indian couture jewel tones",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Saree Store",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

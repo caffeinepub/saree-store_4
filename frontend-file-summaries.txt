@@ -1,0 +1,15 @@
+{
+  "frontend/src/components/Header.tsx": "Sticky teal-themed site header with logo, desktop/mobile navigation, search form, cart icon using `totalItems` from CartContext, and login/logout button.",
+  "frontend/src/components/CartDrawer.tsx": "Slide-in cart drawer using Sheet component, correctly using `items` and `subtotal` from CartContext to display cart items with quantity controls and checkout button.",
+  "frontend/src/components/Chatbox.tsx": "Floating chat widget with bot auto-replies, message history, quick reply buttons, and typing indicator. Fixed: replaced `flex-shrink-0` with `shrink-0` on quick reply buttons and `placeholder-muted-foreground` with `placeholder:text-muted-foreground` on the input field.",
+  "frontend/src/components/Footer.tsx": "Site footer rebranded to \"Dali's Boutique\" with navigation links, contact info, and caffeine.ai attribution.",
+  "frontend/src/pages/CategoryPage.tsx": "Reusable category listing page that accepts a `category` prop and fetches its own products via `useGetProductsByCategory`, with banner, search, sort, price filter, and product grid.",
+  "frontend/src/App.tsx": "Main application entry point that sets up TanStack Router with all routes (home, sarees, jewelry, handbags, offers, product detail, admin, search), wraps everything in CartProvider, and renders the Layout with Header, Footer, CartDrawer, and Chatbox.",
+  "frontend/src/pages/ProductDetailPage.tsx": "Product detail page showing image, price, description, stock status, add-to-cart, and saree-specific tabs for SuitabilityChecker and VirtualTryOn (passing `product` and `allSarees` props).",
+  "frontend/src/pages/AdminPage.tsx": "Protected admin panel page that checks admin role before rendering; provides a form to add new products and a scrollable list of all existing products with delete functionality.",
+  "frontend/src/pages/SearchPage.tsx": "Search results page that reads the `q` query parameter from the URL and displays matching products in a grid using the backend's searchProducts method.",
+  "frontend/index.html": "HTML entry point with updated browser tab title \"Dali's Boutique\".",
+  "frontend/src/pages/HomePage.tsx": "Home page with a single hero banner (\"New Collection 2026 / Timeless Elegance\" appears exactly once), category grid, new arrivals, offers, and a Virtual Try-On CTA section.",
+  "frontend/src/components/VirtualTryOn.tsx": "Virtual Try-On component accepting both `allSarees`/`product` and `sarees`/`selectedSareeId` prop naming conventions, with photo upload, preference selectors, and client-side suitability scoring.",
+  "frontend/src/pages/SareesPage.tsx": "Sarees category page with banner, Virtual Try-On dialog (passing `allSarees` prop), search/sort/price filters, and product grid."
+}

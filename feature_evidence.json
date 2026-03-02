@@ -1,0 +1,40 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-replace-the-current-indian-couture-jewel-tone-color-scheme-deep-crimson-gold-ivory-with-a-completely-different-and-unique-visual-palette-applied-consistently-across-all-pages-and-components-the-new-palette-should-feel-elegant-and-fashionable-for-a-boutique-experience-but-distinctly-different-from-the-existing-scheme-for-example-a-cool-emerald-and-champagne-palette-a-dusky-rose-and-slate-palette-or-a-midnight-indigo-and-pearl-palette-update-all-css-custom-properties-in-frontend-src-index-css-and-frontend-index-css-tailwind-color-tokens-in-tailwind-config-js-and-any-inline-color-references-in-components-and-pages-so-the-entire-app-reflects-the-new-unified-theme-including-the-header-footer-homepage-categorypages-offerspage-productcard-cartdrawer-chatbox-suitabilitychecker-virtualtryon-adminpage-and-all-other-ui-components",
+      "featureTitle": "Replace the current Indian couture jewel-tone color scheme (deep crimson, gold, ivory) with a completely different and unique visual palette applied consistently across all pages and components. The new palette should feel elegant and fashionable for a boutique experience but distinctly different from the existing scheme — for example, a cool emerald and champagne palette, a dusky rose and slate palette, or a midnight indigo and pearl palette. Update all CSS custom properties in frontend/src/index.css and frontend/index.css, Tailwind color tokens in tailwind.config.js, and any inline color references in components and pages so the entire app reflects the new unified theme, including the Header, Footer, HomePage, CategoryPages, OffersPage, ProductCard, CartDrawer, Chatbox, SuitabilityChecker, VirtualTryOn, AdminPage, and all other UI components.",
+      "files": [
+        "frontend/src/components/AccessDeniedScreen.tsx",
+        "frontend/src/components/CartDrawer.tsx",
+        "frontend/src/components/Chatbox.tsx",
+        "frontend/src/components/Footer.tsx",
+        "frontend/src/components/Header.tsx",
+        "frontend/src/components/ProductCard.tsx",
+        "frontend/src/components/SuitabilityChecker.tsx",
+        "frontend/src/components/VirtualTryOn.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/AdminPage.tsx",
+        "frontend/src/pages/CategoryPage.tsx",
+        "frontend/src/pages/HomePage.tsx",
+        "frontend/src/pages/OffersPage.tsx",
+        "frontend/src/pages/ProductDetailPage.tsx",
+        "frontend/src/pages/SareesPage.tsx",
+        "frontend/src/pages/SearchPage.tsx",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    }
+  ]
+}
