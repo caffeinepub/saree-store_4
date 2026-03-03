@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
+import { useActor } from "@/hooks/useActor";
 import {
   useAddProduct,
   useDeleteProduct,
@@ -21,6 +22,8 @@ import {
   Plus,
   ShieldCheck,
   Trash2,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
@@ -178,9 +181,11 @@ function AdminLoginGate({ onUnlock }: { onUnlock: () => void }) {
 
 export default function AdminPage() {
   const [unlocked, setUnlocked] = useState(false);
+  const { actor, isFetching: actorLoading } = useActor();
   const { data: products, isLoading: loadingProducts } = useGetAllProducts();
   const addProduct = useAddProduct();
   const deleteProduct = useDeleteProduct();
+  const isConnected = !!actor && !actorLoading;
 
   const [form, setForm] = useState<PartialProduct>(defaultForm);
   const [priceInput, setPriceInput] = useState("");
@@ -225,6 +230,15 @@ export default function AdminPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Wait for actor to be ready before submitting
+    if (!isConnected) {
+      toast.error(
+        "Still connecting to the server. Please wait a moment and try again.",
+      );
+      return;
+    }
+
     const finalImageUrl = imagePreview || form.imageUrl;
     const product: PartialProduct = {
       ...form,
@@ -252,9 +266,13 @@ export default function AdminPage() {
         toast.error(
           "Image is too large. Please use a smaller photo (under 1MB).",
         );
-      } else if (msg.includes("Actor not available")) {
+      } else if (
+        msg.includes("Actor not available") ||
+        msg.includes("connection") ||
+        msg.includes("connect")
+      ) {
         toast.error(
-          "Connection not ready. Please wait a moment and try again.",
+          "Connection not ready. Please wait a few seconds and try again.",
         );
       } else {
         toast.error(`Failed to add product: ${msg.slice(0, 100)}`);
@@ -289,13 +307,40 @@ export default function AdminPage() {
               Manage your product catalogue — Dali's Boutique
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => setUnlocked(false)}
-            className="ml-auto text-xs font-sans text-teal-400 hover:text-teal-600 underline"
-          >
-            Lock
-          </button>
+          {/* Connection status */}
+          <div className="ml-auto flex items-center gap-3">
+            <div
+              data-ocid="admin.connection.status"
+              className={`flex items-center gap-1.5 text-xs font-sans px-2.5 py-1 rounded-full border ${
+                actorLoading
+                  ? "bg-yellow-50 border-yellow-200 text-yellow-700"
+                  : isConnected
+                    ? "bg-teal-50 border-teal-200 text-teal-700"
+                    : "bg-red-50 border-red-200 text-red-700"
+              }`}
+            >
+              {actorLoading ? (
+                <>
+                  <Loader2 className="w-3 h-3 animate-spin" /> Connecting...
+                </>
+              ) : isConnected ? (
+                <>
+                  <Wifi className="w-3 h-3" /> Connected
+                </>
+              ) : (
+                <>
+                  <WifiOff className="w-3 h-3" /> Offline
+                </>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => setUnlocked(false)}
+              className="text-xs font-sans text-teal-400 hover:text-teal-600 underline"
+            >
+              Lock
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -530,14 +575,19 @@ export default function AdminPage() {
 
                 <Button
                   type="submit"
-                  disabled={addProduct.isPending}
+                  disabled={addProduct.isPending || !isConnected}
                   data-ocid="admin.product.submit_button"
-                  className="w-full bg-teal-700 hover:bg-teal-600 text-champagne-200 font-sans tracking-widest uppercase text-sm rounded-sm border-0"
+                  className="w-full bg-teal-700 hover:bg-teal-600 text-champagne-200 font-sans tracking-widest uppercase text-sm rounded-sm border-0 disabled:opacity-60"
                 >
                   {addProduct.isPending ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />{" "}
                       Adding...
+                    </>
+                  ) : actorLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />{" "}
+                      Connecting...
                     </>
                   ) : (
                     <>
