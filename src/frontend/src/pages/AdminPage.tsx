@@ -32,6 +32,18 @@ import { toast } from "sonner";
 // Simple local password for admin access — no blockchain auth required
 const ADMIN_PASSWORD = "admin2024";
 
+const SAREE_SUB_TYPES = [
+  "Silk",
+  "Cotton",
+  "Embroidery",
+  "Banarasi",
+  "Georgette",
+  "Chiffon",
+  "Kanjivaram",
+  "Casual",
+  "Other",
+];
+
 // Compress image to stay well within ICP's 2MB message size limit.
 // Pass 1: max 400px / JPEG 0.5
 // Pass 2 (if > 600KB base64): max 300px / JPEG 0.35
@@ -71,18 +83,23 @@ async function compressImagePass(
 }
 
 async function compressImage(dataUrl: string): Promise<string> {
-  // Pass 1: 400px / 0.5 quality
-  let result = await compressImagePass(dataUrl, 400, 0.5);
+  // Pass 1: 800px / 0.82 quality — high quality for crisp product photos
+  let result = await compressImagePass(dataUrl, 800, 0.82);
 
-  // Pass 2 if still > 600 KB in base64
-  if (result.length > 600_000) {
-    result = await compressImagePass(result, 300, 0.35);
+  // Pass 2 if still > 900 KB base64 → reduce to 600px / 0.72
+  if (result.length > 900_000) {
+    result = await compressImagePass(result, 600, 0.72);
   }
 
-  // Hard limit: 400 KB base64
-  if (result.length > 400_000) {
+  // Pass 3 if still > 700 KB → 500px / 0.65
+  if (result.length > 700_000) {
+    result = await compressImagePass(result, 500, 0.65);
+  }
+
+  // Hard limit: 1.2 MB base64 (safe for ICP 2MB message limit)
+  if (result.length > 1_200_000) {
     throw new Error(
-      "Image is too large even after compression. Please use a smaller or lower-resolution photo.",
+      "Image is too large even after compression. Please use a smaller photo.",
     );
   }
 
@@ -195,6 +212,7 @@ export default function AdminPage() {
   const isConnected = !!actor && !actorLoading;
 
   const [form, setForm] = useState<PartialProduct>(defaultForm);
+  const [sareeSubType, setSareeSubType] = useState("");
   const [priceInput, setPriceInput] = useState("");
   const [stockInput, setStockInput] = useState("");
   const [imagePreview, setImagePreview] = useState<string>("");
@@ -270,8 +288,23 @@ export default function AdminPage() {
     }
 
     const finalImageUrl = imagePreview || form.imageUrl;
+    // Append saree sub-type tag to description so category filter on SareesPage works
+    let finalDescription = form.description;
+    if (
+      form.category === Category.saree &&
+      sareeSubType &&
+      sareeSubType !== "Other"
+    ) {
+      const tag = sareeSubType;
+      if (!finalDescription.toLowerCase().includes(tag.toLowerCase())) {
+        finalDescription = finalDescription
+          ? `${finalDescription} | ${tag}`
+          : tag;
+      }
+    }
     const product: PartialProduct = {
       ...form,
+      description: finalDescription,
       imageUrl: finalImageUrl,
       price: BigInt(Math.round(Number.parseFloat(priceInput) || 0)),
       stockQuantity: BigInt(Math.round(Number.parseFloat(stockInput) || 0)),
@@ -282,6 +315,7 @@ export default function AdminPage() {
         "Product added successfully! It will appear in the store shortly.",
       );
       setForm(defaultForm);
+      setSareeSubType("");
       setPriceInput("");
       setStockInput("");
       setImagePreview("");
@@ -416,9 +450,13 @@ export default function AdminPage() {
                   </Label>
                   <select
                     value={form.category as string}
-                    onChange={(e) =>
-                      setForm({ ...form, category: e.target.value as Category })
-                    }
+                    onChange={(e) => {
+                      setForm({
+                        ...form,
+                        category: e.target.value as Category,
+                      });
+                      setSareeSubType("");
+                    }}
                     data-ocid="admin.product.category.select"
                     className="mt-1 w-full text-sm border border-teal-200 rounded-md px-3 py-2 bg-white text-foreground focus:outline-none focus:ring-1 focus:ring-teal-400 focus:border-teal-400"
                   >
@@ -427,6 +465,34 @@ export default function AdminPage() {
                     <option value={Category.handbag}>Handbag</option>
                   </select>
                 </div>
+
+                {/* Saree Type — only shown when category is Saree */}
+                {form.category === Category.saree && (
+                  <div>
+                    <Label className="font-sans text-xs text-teal-700 uppercase tracking-wider">
+                      Saree Type
+                    </Label>
+                    <select
+                      value={sareeSubType}
+                      onChange={(e) => setSareeSubType(e.target.value)}
+                      data-ocid="admin.product.sareetype.select"
+                      className="mt-1 w-full text-sm border border-teal-200 rounded-md px-3 py-2 bg-white text-foreground focus:outline-none focus:ring-1 focus:ring-teal-400 focus:border-teal-400"
+                    >
+                      <option value="">— Select type —</option>
+                      {SAREE_SUB_TYPES.map((t) => (
+                        <option key={t} value={t}>
+                          {t}
+                        </option>
+                      ))}
+                    </select>
+                    {sareeSubType && sareeSubType !== "Other" && (
+                      <p className="text-xs text-teal-500 font-sans mt-1">
+                        "{sareeSubType}" will be tagged in the description so
+                        customers can filter by this type.
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>

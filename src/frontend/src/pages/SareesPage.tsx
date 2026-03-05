@@ -15,6 +15,18 @@ import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Search, SlidersHorizontal, Sparkles } from "lucide-react";
 import { useState } from "react";
 
+const SUB_CATEGORIES = [
+  "All",
+  "Silk",
+  "Cotton",
+  "Embroidery",
+  "Banarasi",
+  "Georgette",
+  "Chiffon",
+  "Kanjivaram",
+  "Casual",
+];
+
 export default function SareesPage() {
   const _navigate = useNavigate();
   const { data: sarees, isLoading } = useGetProductsByCategory(Category.saree);
@@ -22,6 +34,7 @@ export default function SareesPage() {
   const [sortBy, setSortBy] = useState("default");
   const [maxPrice, setMaxPrice] = useState(50000);
   const [tryOnOpen, setTryOnOpen] = useState(false);
+  const [subCategory, setSubCategory] = useState("All");
 
   const filtered = (sarees ?? [])
     .filter((p) => {
@@ -29,7 +42,13 @@ export default function SareesPage() {
         p.name.toLowerCase().includes(search.toLowerCase()) ||
         p.description.toLowerCase().includes(search.toLowerCase());
       const matchPrice = Number(p.price) <= maxPrice;
-      return matchSearch && matchPrice;
+      const matchSub =
+        subCategory === "All"
+          ? true
+          : `${p.name} ${p.description}`
+              .toLowerCase()
+              .includes(subCategory.toLowerCase());
+      return matchSearch && matchPrice && matchSub;
     })
     .sort((a, b) => {
       if (sortBy === "price-asc") return Number(a.price) - Number(b.price);
@@ -97,9 +116,10 @@ export default function SareesPage() {
       </section>
 
       {/* Filters */}
-      <section className="bg-white border-b border-border py-4 sticky top-16 z-30">
+      <section className="bg-white border-b border-border sticky top-16 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-3 items-center">
+          {/* Main filter bar */}
+          <div className="flex flex-wrap gap-3 items-center py-3">
             {/* Search */}
             <div className="relative flex-1 min-w-[180px] max-w-xs">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
@@ -144,6 +164,25 @@ export default function SareesPage() {
             <span className="text-xs text-muted-foreground font-sans ml-auto">
               {filtered.length} product{filtered.length !== 1 ? "s" : ""}
             </span>
+          </div>
+
+          {/* Sub-category pill row */}
+          <div className="pb-3 overflow-x-auto flex gap-2 scrollbar-hide">
+            {SUB_CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                data-ocid="sarees.subcategory.tab"
+                onClick={() => setSubCategory(cat)}
+                className={`shrink-0 px-4 py-1.5 rounded-full text-xs font-sans font-medium border transition-all duration-150 whitespace-nowrap ${
+                  subCategory === cat
+                    ? "bg-teal-700 text-white border-teal-700 shadow-sm"
+                    : "bg-white text-teal-700 border-teal-300 hover:border-teal-500 hover:bg-teal-50"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </div>
       </section>

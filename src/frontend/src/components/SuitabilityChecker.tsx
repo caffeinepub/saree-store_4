@@ -24,7 +24,11 @@ function calculateSuitability(
   bodyType: BodyType,
   occasion: Occasion,
 ): SuitabilityResult {
-  let score = 70;
+  // Deterministic but varied base score derived from product name hash
+  const nameHash = product.name
+    .split("")
+    .reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  let score = 55 + (nameHash % 20); // base: 55–74
   const tips: string[] = [];
   const desc = product.description.toLowerCase();
   const name = product.name.toLowerCase();
