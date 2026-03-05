@@ -1,4 +1,5 @@
 import type { Product } from "@/backend";
+import TryOnCanvas from "@/components/TryOnCanvas";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Camera, ChevronDown, RefreshCw, Sparkles, Upload } from "lucide-react";
@@ -375,6 +376,11 @@ function VirtualTryOn({
       categoryLabel,
     );
     setResult(res);
+    // Scroll down a little to show the canvas result
+    setTimeout(() => {
+      const el = document.getElementById("tryon-result-section");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 200);
   };
 
   const handleReset = () => {
@@ -595,63 +601,85 @@ function VirtualTryOn({
           <Button
             onClick={handleCheck}
             disabled={!selectedItem}
-            className="w-full bg-teal-700 hover:bg-teal-600 text-champagne-200 font-sans text-xs tracking-widest uppercase rounded-sm border-0"
+            className="w-full bg-gradient-to-r from-teal-700 to-teal-600 hover:from-teal-600 hover:to-teal-500 text-white font-sans text-sm tracking-widest uppercase rounded-full border-0 py-3 shadow-lg shadow-teal-200"
+            data-ocid="tryon.primary_button"
           >
-            <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-            Check Suitability
+            <Sparkles className="w-4 h-4 mr-2" />
+            Generate My AI Look ✨
           </Button>
 
-          {/* Result */}
+          {/* Result section */}
           {result && (
-            <div className="bg-teal-50 rounded-lg p-4 border border-teal-100">
-              <div className="flex items-center justify-between mb-2">
-                <span className={`font-display text-lg ${scoreColor}`}>
-                  {result.label}
-                </span>
-                <span className={`font-serif text-2xl font-bold ${scoreColor}`}>
-                  {result.score}%
-                </span>
-              </div>
-              <Progress value={result.score} className="h-2 mb-3" />
-              <ul className="space-y-1.5">
-                {result.tips.map((tip) => (
-                  <li
-                    key={tip}
-                    className="flex items-start gap-2 text-xs font-sans text-teal-700"
-                  >
-                    <Sparkles className="w-3 h-3 mt-0.5 shrink-0 text-champagne-500" />
-                    {tip}
-                  </li>
-                ))}
-              </ul>
-
-              {/* Show user photo alongside product when both are available */}
+            <div id="tryon-result-section" className="space-y-5 pt-2">
+              {/* AI Try-On Canvas — PROMINENT and LARGE */}
               {userImage && selectedItem?.imageUrl && (
-                <div className="mt-4 pt-4 border-t border-teal-200">
-                  <p className="font-sans text-xs text-teal-600 uppercase tracking-wider mb-2">
-                    Your Look
-                  </p>
-                  <div className="flex gap-2">
-                    <div className="flex-1 rounded overflow-hidden aspect-square bg-teal-50 border border-teal-100">
-                      <img
-                        src={userImage}
-                        alt="You"
-                        className="w-full h-full object-cover object-top"
-                      />
+                <div
+                  className="rounded-2xl overflow-hidden border border-amber-200 shadow-2xl shadow-amber-100/50"
+                  data-ocid="tryon.panel"
+                >
+                  {/* Gradient header */}
+                  <div className="bg-gradient-to-r from-amber-600 via-rose-500 to-purple-600 px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-white" />
+                      <h4 className="font-sans text-sm text-white font-bold tracking-wide">
+                        Your AI-Generated Look
+                      </h4>
+                      <Sparkles className="w-4 h-4 text-white ml-auto" />
                     </div>
-                    <div className="flex-1 rounded overflow-hidden aspect-square bg-teal-50 border border-teal-100">
-                      <img
-                        src={selectedItem.imageUrl}
-                        alt={selectedItem.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+                    <p className="text-white/80 text-xs mt-0.5">
+                      AI-Generated Preview — our system shows how this item
+                      looks on you
+                    </p>
                   </div>
-                  <p className="text-xs text-center text-muted-foreground font-sans mt-1">
-                    You + {selectedItem.name}
-                  </p>
+
+                  {/* Canvas, centered, full-width */}
+                  <div className="bg-gradient-to-b from-slate-50 to-amber-50/30 p-3 flex justify-center">
+                    <TryOnCanvas
+                      userImage={userImage}
+                      productImageUrl={selectedItem.imageUrl}
+                      categoryLabel={categoryLabel}
+                      productName={selectedItem.name}
+                    />
+                  </div>
                 </div>
               )}
+
+              {/* Score + tips — BELOW the AI image */}
+              <div className="bg-gradient-to-br from-teal-50 to-teal-100/50 rounded-xl p-4 border border-teal-200 shadow-sm">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <span
+                      className={`font-display text-lg font-semibold ${scoreColor}`}
+                    >
+                      {result.label}
+                    </span>
+                    <p className="text-xs text-teal-500 font-sans mt-0.5">
+                      Suitability Score
+                    </p>
+                  </div>
+                  <span
+                    className={`font-serif text-3xl font-bold ${scoreColor}`}
+                  >
+                    {result.score}
+                    <span className="text-base">%</span>
+                  </span>
+                </div>
+                <Progress
+                  value={result.score}
+                  className="h-2.5 mb-4 rounded-full"
+                />
+                <ul className="space-y-2">
+                  {result.tips.map((tip) => (
+                    <li
+                      key={tip}
+                      className="flex items-start gap-2.5 text-xs font-sans text-teal-700 bg-white/60 rounded-lg px-3 py-2"
+                    >
+                      <Sparkles className="w-3 h-3 mt-0.5 shrink-0 text-amber-500" />
+                      {tip}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           )}
         </div>

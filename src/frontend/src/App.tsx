@@ -25,6 +25,7 @@ const OffersPage = lazy(() => import("./pages/OffersPage"));
 const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 
 // Layout component that wraps all pages
 function Layout() {
@@ -117,6 +118,12 @@ const searchRoute = createRoute({
   }),
 });
 
+const checkoutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/checkout",
+  component: CheckoutPage,
+});
+
 // Build the route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -127,6 +134,7 @@ const routeTree = rootRoute.addChildren([
   productDetailRoute,
   adminRoute,
   searchRoute,
+  checkoutRoute,
 ]);
 
 // Create the router with hash history for ICP compatibility

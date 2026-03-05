@@ -152,7 +152,32 @@ const BOT_RULES: BotRule[] = [
       "how long",
     ],
     response:
-      "We offer free shipping on orders above ₹2,999. Standard delivery takes 3-5 business days across India. Express delivery (1-2 days) is available at extra charge. You'll receive a tracking number via email once your order ships.",
+      "Yes, we deliver across India including all major cities, towns, and remote areas! Free shipping on orders above ₹2,999. Standard delivery takes 3-5 business days. Express delivery (1-2 days) is available at extra charge. You'll receive a tracking number once your order is dispatched. To check availability for your specific location, please mention your city or PIN code.",
+  },
+  {
+    keywords: [
+      "kanyakumari",
+      "tamil nadu",
+      "chennai",
+      "coimbatore",
+      "madurai",
+      "trichy",
+      "tirunelveli",
+      "tenkasi",
+      "nagercoil",
+      "south india",
+      "kerala",
+      "bangalore",
+      "hyderabad",
+      "mumbai",
+      "delhi",
+      "kolkata",
+      "pune",
+      "ahmedabad",
+      "surat",
+    ],
+    response:
+      "Yes! We deliver to your location. We ship across all of India including Tamil Nadu, Kerala, Karnataka, Andhra Pradesh, and all other states. For cities like Kanyakumari, Nagercoil, Tirunelveli, and surrounding areas, standard delivery takes 3-5 business days and express delivery (1-2 days) is also available. Free shipping on orders above ₹2,999!",
   },
   {
     keywords: [
@@ -287,14 +312,38 @@ const BOT_RULES: BotRule[] = [
 function getBotResponse(message: string): string {
   const lower = message.toLowerCase();
 
+  // Special location/shipping detection — if message asks about shipping to a place
+  const isAskingAboutShipping =
+    lower.includes("ship") ||
+    lower.includes("deliver") ||
+    lower.includes("available") ||
+    lower.includes("availabl");
+  const mentionsLocation =
+    lower.includes("kanyakumari") ||
+    lower.includes("tamil") ||
+    lower.includes("kerala") ||
+    lower.includes("bangalore") ||
+    lower.includes("chennai") ||
+    lower.includes("india") ||
+    /\b\d{6}\b/.test(lower); // PIN code
+
+  if (isAskingAboutShipping && mentionsLocation) {
+    return "Yes, we deliver to all locations across India including Tamil Nadu, Kerala, Karnataka, Andhra Pradesh, and more! For Kanyakumari and surrounding areas, standard delivery is 3-5 business days and express delivery (1-2 days) is available. Free shipping on orders above ₹2,999. You'll receive a tracking number once your order ships.";
+  }
+
   for (const rule of BOT_RULES) {
     if (rule.keywords.some((kw) => lower.includes(kw))) {
       return rule.response;
     }
   }
 
-  // Fallback — try to give a helpful nudge
-  return "Thank you for your message! I may not have the exact answer, but I can help with saree collections, jewelry, handbags, pricing, shipping, returns, and more. Try asking something like 'What sarees do you have?' or 'What are the offers?' 😊";
+  // General location/place query fallback
+  if (mentionsLocation) {
+    return "Yes, we deliver to all parts of India! Whether you're in Tamil Nadu, Kerala, Karnataka, or anywhere else, we ship your order safely. Standard delivery takes 3-5 business days. Free shipping on orders above ₹2,999. Is there anything else I can help you with?";
+  }
+
+  // Final fallback
+  return "Thank you for your message! I can help you with: saree & jewelry collections, pricing, offers, shipping & delivery, returns, fabric care, and more. Try asking something like 'Do you ship to Kanyakumari?' or 'What sarees are available?' and I'll answer right away!";
 }
 
 export default function Chatbox() {

@@ -7,6 +7,22 @@ import { ShoppingBag, Star, Tag } from "lucide-react";
 import type React from "react";
 import { memo } from "react";
 
+/** Parse discount percentage from offerDetails string like "20% off" or "flat 15% off" */
+function parseDiscountPercent(offerDetails?: string): number {
+  if (!offerDetails) return 0;
+  const match = offerDetails.match(/(\d+)\s*%/);
+  return match ? Number(match[1]) : 0;
+}
+
+function getDiscountedPrice(
+  price: bigint,
+  offerDetails?: string,
+): number | null {
+  const pct = parseDiscountPercent(offerDetails);
+  if (pct <= 0 || pct >= 100) return null;
+  return Math.round(Number(price) * (1 - pct / 100));
+}
+
 interface ProductCardProps {
   product: Product;
 }
@@ -81,13 +97,27 @@ function ProductCard({ product }: ProductCardProps) {
         <p className="text-xs text-muted-foreground font-sans mt-0.5 line-clamp-2">
           {product.description}
         </p>
-        <div className="flex items-center justify-between mt-2">
-          <span className="font-serif text-lg font-semibold text-teal-700">
-            ₹{Number(product.price).toLocaleString("en-IN")}
-          </span>
-          {product.isOnOffer && product.offerDetails && (
-            <span className="text-xs text-champagne-600 font-sans">
-              {product.offerDetails}
+        <div className="flex items-center gap-2 flex-wrap mt-2">
+          {product.isOnOffer &&
+          getDiscountedPrice(product.price, product.offerDetails) ? (
+            <>
+              <span className="font-serif text-lg font-semibold text-teal-700">
+                ₹
+                {getDiscountedPrice(
+                  product.price,
+                  product.offerDetails,
+                )!.toLocaleString("en-IN")}
+              </span>
+              <span className="font-serif text-sm text-muted-foreground line-through">
+                ₹{Number(product.price).toLocaleString("en-IN")}
+              </span>
+              <Badge className="bg-red-100 text-red-700 text-xs px-1.5 py-0 font-sans border-0">
+                {parseDiscountPercent(product.offerDetails)}% off
+              </Badge>
+            </>
+          ) : (
+            <span className="font-serif text-lg font-semibold text-teal-700">
+              ₹{Number(product.price).toLocaleString("en-IN")}
             </span>
           )}
         </div>

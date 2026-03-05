@@ -8,7 +8,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useCart } from "@/contexts/CartContext";
-import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 
 export default function CartDrawer() {
   const {
@@ -19,6 +20,7 @@ export default function CartDrawer() {
     removeFromCart,
     subtotal,
   } = useCart();
+  const navigate = useNavigate();
 
   return (
     <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
@@ -133,7 +135,14 @@ export default function CartDrawer() {
             <p className="text-xs text-muted-foreground font-sans text-center">
               Shipping and taxes calculated at checkout
             </p>
-            <Button className="w-full bg-teal-700 hover:bg-teal-600 text-champagne-200 font-sans tracking-widest uppercase rounded-sm border-0">
+            <Button
+              className="w-full bg-teal-700 hover:bg-teal-600 text-champagne-200 font-sans tracking-widest uppercase rounded-sm border-0"
+              data-ocid="cart.checkout.primary_button"
+              onClick={() => {
+                setIsCartOpen(false);
+                navigate({ to: "/checkout" });
+              }}
+            >
               Proceed to Checkout
             </Button>
             <Button

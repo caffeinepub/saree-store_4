@@ -241,8 +241,98 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Virtual Try-On CTA */}
+      {/* Real Looks / Customer Spotlight */}
       <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            {/* Image side */}
+            <div className="relative">
+              <div className="relative overflow-hidden rounded-2xl shadow-2xl aspect-[3/4] max-w-sm mx-auto md:max-w-none">
+                <img
+                  src="/assets/generated/customer-look-saree.dim_600x800.jpg"
+                  alt="Saree look by Dali's Boutique"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover object-top"
+                />
+                {/* Overlay badge */}
+                <div className="absolute top-4 left-4">
+                  <span className="bg-champagne-500 text-teal-900 font-sans text-xs tracking-widest uppercase px-3 py-1.5 rounded-full shadow font-semibold">
+                    Our Customer Look
+                  </span>
+                </div>
+                {/* Bottom gradient */}
+                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-teal-900/70 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <p className="font-serif text-champagne-200 text-lg leading-snug">
+                    "Elegance is when the inside is as beautiful as the
+                    outside."
+                  </p>
+                </div>
+              </div>
+              {/* Decorative element */}
+              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-champagne-100 rounded-full -z-10 hidden md:block" />
+              <div className="absolute -top-4 -left-4 w-16 h-16 bg-teal-100 rounded-full -z-10 hidden md:block" />
+            </div>
+
+            {/* Text side */}
+            <div className="flex flex-col gap-5">
+              <div>
+                <span className="font-sans text-xs text-champagne-600 tracking-widest uppercase">
+                  Real Looks. Real Women.
+                </span>
+                <h2 className="font-serif text-3xl md:text-4xl text-teal-800 mt-2 leading-tight">
+                  Wear the Saree,
+                  <br />
+                  <span className="text-champagne-500 italic">
+                    Own the Moment
+                  </span>
+                </h2>
+              </div>
+              <p className="font-sans text-muted-foreground text-base leading-relaxed">
+                Every saree at Dali's Boutique is handpicked for quality,
+                elegance, and grace. See how beautifully our customers carry
+                their look — from festive occasions to everyday wear.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  "100% authentic silk & cotton fabrics",
+                  "Expert craftsmanship in every weave",
+                  "Ships across all of India",
+                ].map((point) => (
+                  <li
+                    key={point}
+                    className="flex items-center gap-3 font-sans text-sm text-teal-700"
+                  >
+                    <span className="w-5 h-5 rounded-full bg-teal-100 flex items-center justify-center shrink-0">
+                      <Star className="w-2.5 h-2.5 text-teal-600 fill-teal-600" />
+                    </span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+              <div className="flex flex-wrap gap-3 mt-2">
+                <Button
+                  onClick={() => navigate({ to: "/sarees" })}
+                  className="bg-teal-700 hover:bg-teal-600 text-champagne-200 font-sans tracking-widest uppercase text-sm rounded-sm border-0 px-6"
+                >
+                  Shop Sarees <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+                <Button
+                  onClick={() => navigate({ to: "/sarees" })}
+                  variant="outline"
+                  className="border-teal-300 text-teal-700 hover:bg-teal-50 font-sans tracking-widest uppercase text-sm rounded-sm"
+                >
+                  <Sparkles className="w-4 h-4 mr-2" /> Try On
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Virtual Try-On CTA */}
+      <section className="py-16 bg-sand-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Sparkles className="w-10 h-10 text-teal-600 mx-auto mb-4" />
           <h2 className="font-serif text-3xl md:text-4xl text-teal-800 mb-3">

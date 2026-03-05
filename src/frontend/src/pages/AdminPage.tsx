@@ -20,24 +20,30 @@ import {
   Lock,
   Package,
   Plus,
+  RefreshCw,
   ShieldCheck,
   Trash2,
   Wifi,
   WifiOff,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 // Simple local password for admin access — no blockchain auth required
 const ADMIN_PASSWORD = "admin2024";
 
-// Compress image aggressively: max 600px, JPEG 0.6 quality to stay well under ICP 1.5MB ingress limit
-// Base64 encoded image must stay under ~1MB (raw bytes ~750KB)
-async function compressImage(dataUrl: string): Promise<string> {
+// Compress image to stay well within ICP's 2MB message size limit.
+// Pass 1: max 400px / JPEG 0.5
+// Pass 2 (if > 600KB base64): max 300px / JPEG 0.35
+// If still > 400KB after pass 2, throws with a user-visible message.
+async function compressImagePass(
+  dataUrl: string,
+  maxDim: number,
+  quality: number,
+): Promise<string> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
-      const maxDim = 600;
       let { width, height } = img;
       if (width > maxDim || height > maxDim) {
         if (width > height) {
@@ -57,29 +63,30 @@ async function compressImage(dataUrl: string): Promise<string> {
         return;
       }
       ctx.drawImage(img, 0, 0, width, height);
-      const result = canvas.toDataURL("image/jpeg", 0.6);
-      // Safety check: if still > 900KB base64, compress more
-      if (result.length > 900_000) {
-        canvas.toBlob(
-          (blob) => {
-            if (!blob) {
-              resolve(result);
-              return;
-            }
-            const reader2 = new FileReader();
-            reader2.onload = (e) => resolve(e.target?.result as string);
-            reader2.readAsDataURL(blob);
-          },
-          "image/jpeg",
-          0.4,
-        );
-      } else {
-        resolve(result);
-      }
+      resolve(canvas.toDataURL("image/jpeg", quality));
     };
     img.onerror = () => reject(new Error("Failed to load image"));
     img.src = dataUrl;
   });
+}
+
+async function compressImage(dataUrl: string): Promise<string> {
+  // Pass 1: 400px / 0.5 quality
+  let result = await compressImagePass(dataUrl, 400, 0.5);
+
+  // Pass 2 if still > 600 KB in base64
+  if (result.length > 600_000) {
+    result = await compressImagePass(result, 300, 0.35);
+  }
+
+  // Hard limit: 400 KB base64
+  if (result.length > 400_000) {
+    throw new Error(
+      "Image is too large even after compression. Please use a smaller or lower-resolution photo.",
+    );
+  }
+
+  return result;
 }
 
 const defaultForm: PartialProduct = {
@@ -191,8 +198,24 @@ export default function AdminPage() {
   const [priceInput, setPriceInput] = useState("");
   const [stockInput, setStockInput] = useState("");
   const [imagePreview, setImagePreview] = useState<string>("");
+  const [imageCompressedSizeKb, setImageCompressedSizeKb] = useState<
+    number | null
+  >(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [showRetry, setShowRetry] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Show a "Retry" button after 8 seconds if still not connected
+  useEffect(() => {
+    if (isConnected) {
+      setShowRetry(false);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setShowRetry(true);
+    }, 8000);
+    return () => clearTimeout(timer);
+  }, [isConnected]);
 
   if (!unlocked) {
     return <AdminLoginGate onUnlock={() => setUnlocked(true)} />;
@@ -202,16 +225,23 @@ export default function AdminPage() {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadingImage(true);
+    setImageCompressedSizeKb(null);
     try {
       const reader = new FileReader();
       reader.onload = async (ev) => {
         try {
           const raw = ev.target?.result as string;
           const compressed = await compressImage(raw);
+          const sizeKb = Math.round(compressed.length / 1024);
           setForm((prev) => ({ ...prev, imageUrl: compressed }));
           setImagePreview(compressed);
+          setImageCompressedSizeKb(sizeKb);
         } catch (err) {
-          toast.error("Could not process image. Try a smaller photo.");
+          const msg =
+            err instanceof Error
+              ? err.message
+              : "Could not process image. Try a smaller photo.";
+          toast.error(msg);
           console.error(err);
         } finally {
           setUploadingImage(false);
@@ -255,6 +285,7 @@ export default function AdminPage() {
       setPriceInput("");
       setStockInput("");
       setImagePreview("");
+      setImageCompressedSizeKb(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -309,28 +340,41 @@ export default function AdminPage() {
           </div>
           {/* Connection status */}
           <div className="ml-auto flex items-center gap-3">
-            <div
-              data-ocid="admin.connection.status"
-              className={`flex items-center gap-1.5 text-xs font-sans px-2.5 py-1 rounded-full border ${
-                actorLoading
-                  ? "bg-yellow-50 border-yellow-200 text-yellow-700"
-                  : isConnected
-                    ? "bg-teal-50 border-teal-200 text-teal-700"
-                    : "bg-red-50 border-red-200 text-red-700"
-              }`}
-            >
-              {actorLoading ? (
-                <>
-                  <Loader2 className="w-3 h-3 animate-spin" /> Connecting...
-                </>
-              ) : isConnected ? (
-                <>
-                  <Wifi className="w-3 h-3" /> Connected
-                </>
-              ) : (
-                <>
-                  <WifiOff className="w-3 h-3" /> Offline
-                </>
+            <div className="flex items-center gap-2">
+              <div
+                data-ocid="admin.connection.status"
+                className={`flex items-center gap-1.5 text-xs font-sans px-2.5 py-1 rounded-full border ${
+                  actorLoading
+                    ? "bg-yellow-50 border-yellow-200 text-yellow-700"
+                    : isConnected
+                      ? "bg-teal-50 border-teal-200 text-teal-700"
+                      : "bg-red-50 border-red-200 text-red-700"
+                }`}
+              >
+                {actorLoading ? (
+                  <>
+                    <Loader2 className="w-3 h-3 animate-spin" /> Connecting...
+                  </>
+                ) : isConnected ? (
+                  <>
+                    <Wifi className="w-3 h-3" /> Connected
+                  </>
+                ) : (
+                  <>
+                    <WifiOff className="w-3 h-3" /> Offline
+                  </>
+                )}
+              </div>
+              {/* Retry button appears after 8 s if still not connected */}
+              {showRetry && !isConnected && (
+                <button
+                  type="button"
+                  data-ocid="admin.connection.retry.button"
+                  onClick={() => window.location.reload()}
+                  className="flex items-center gap-1 text-xs font-sans text-white bg-teal-600 hover:bg-teal-700 px-2.5 py-1 rounded-full transition-colors"
+                >
+                  <RefreshCw className="w-3 h-3" /> Retry
+                </button>
               )}
             </div>
             <button
@@ -452,12 +496,16 @@ export default function AdminPage() {
                     <label
                       htmlFor="admin-image-file"
                       data-ocid="admin.product.image.upload_button"
-                      className="flex items-center justify-center gap-2 w-full cursor-pointer border-2 border-dashed border-teal-200 hover:border-teal-400 rounded-lg py-4 px-3 text-sm font-sans text-teal-600 hover:text-teal-800 hover:bg-teal-50/50 transition-all"
+                      className={`flex items-center justify-center gap-2 w-full cursor-pointer border-2 border-dashed rounded-lg py-4 px-3 text-sm font-sans transition-all ${
+                        uploadingImage
+                          ? "border-teal-300 bg-teal-50/60 text-teal-700 cursor-wait"
+                          : "border-teal-200 hover:border-teal-400 text-teal-600 hover:text-teal-800 hover:bg-teal-50/50"
+                      }`}
                     >
                       {uploadingImage ? (
                         <>
                           <Loader2 className="w-4 h-4 animate-spin" />
-                          Loading image...
+                          Compressing image...
                         </>
                       ) : (
                         <>
@@ -469,25 +517,37 @@ export default function AdminPage() {
 
                     {/* Image Preview */}
                     {imagePreview && (
-                      <div className="relative rounded-lg overflow-hidden border border-teal-100 aspect-[4/3] bg-sand-50">
-                        <img
-                          src={imagePreview}
-                          alt="Preview"
-                          className="w-full h-full object-cover object-center"
-                          style={{ imageRendering: "auto" }}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setImagePreview("");
-                            setForm((prev) => ({ ...prev, imageUrl: "" }));
-                            if (fileInputRef.current)
-                              fileInputRef.current.value = "";
-                          }}
-                          className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full w-6 h-6 flex items-center justify-center text-teal-600 shadow text-xs font-bold"
-                        >
-                          ✕
-                        </button>
+                      <div className="space-y-1.5">
+                        <div className="relative rounded-lg overflow-hidden border border-teal-100 aspect-[4/3] bg-sand-50">
+                          <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="w-full h-full object-cover object-center"
+                            style={{ imageRendering: "auto" }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setImagePreview("");
+                              setImageCompressedSizeKb(null);
+                              setForm((prev) => ({ ...prev, imageUrl: "" }));
+                              if (fileInputRef.current)
+                                fileInputRef.current.value = "";
+                            }}
+                            className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full w-6 h-6 flex items-center justify-center text-teal-600 shadow text-xs font-bold"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        {imageCompressedSizeKb !== null && (
+                          <p
+                            data-ocid="admin.product.image.success_state"
+                            className="text-xs font-sans text-teal-600 flex items-center gap-1"
+                          >
+                            <span className="inline-block w-2 h-2 rounded-full bg-teal-500" />
+                            Image ready: {imageCompressedSizeKb} KB
+                          </p>
+                        )}
                       </div>
                     )}
 
