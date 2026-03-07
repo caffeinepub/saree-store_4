@@ -16,6 +16,7 @@ import {
   Truck,
 } from "lucide-react";
 import { useState } from "react";
+import gpayQrImg from "/assets/generated/gpay-qr-code.dim_400x500.png";
 
 type Step = "address" | "payment" | "review" | "confirmed";
 
@@ -94,7 +95,7 @@ export default function CheckoutPage() {
 
   const [payment, setPayment] = useState<PaymentMethod>({ type: "upi" });
 
-  const shipping = subtotal >= 2999 ? 0 : 99;
+  const shipping = subtotal >= 2000 ? 0 : 99;
   const total = subtotal + shipping;
 
   const handleAddressSubmit = (e: React.FormEvent) => {
@@ -468,23 +469,62 @@ export default function CheckoutPage() {
 
                   {/* UPI */}
                   {payment.type === "upi" && (
-                    <div>
-                      <Label className="font-sans text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
-                        UPI ID *
-                      </Label>
-                      <Input
-                        required
-                        placeholder="yourname@upi or phone@paytm"
-                        value={payment.upiId ?? ""}
-                        onChange={(e) =>
-                          setPayment((p) => ({ ...p, upiId: e.target.value }))
-                        }
-                        className="border-teal-200 focus:ring-teal-500"
-                        data-ocid="checkout.upi.input"
-                      />
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Supports PhonePe, Google Pay, Paytm, BHIM
-                      </p>
+                    <div className="space-y-4">
+                      {/* GPay QR Section */}
+                      <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                        <p className="text-sm font-sans font-semibold text-green-800 mb-3 flex items-center gap-2">
+                          <Smartphone className="w-4 h-4 text-green-600" />
+                          Pay via Google Pay — Scan QR Code
+                        </p>
+                        <div className="flex flex-col sm:flex-row items-center gap-4">
+                          <div className="bg-white rounded-xl p-2 shadow-sm border border-green-100 shrink-0">
+                            <img
+                              src={gpayQrImg}
+                              alt="Dali's Boutique GPay QR Code"
+                              className="w-36 h-auto rounded-lg"
+                            />
+                          </div>
+                          <div className="text-sm font-sans text-green-700 space-y-1.5">
+                            <p className="font-semibold text-green-800">
+                              How to pay:
+                            </p>
+                            <ol className="list-decimal list-inside space-y-1 text-xs text-green-700">
+                              <li>Open Google Pay on your phone</li>
+                              <li>Tap "Scan any QR code"</li>
+                              <li>Scan the QR code shown here</li>
+                              <li>
+                                Enter amount:{" "}
+                                <span className="font-bold">
+                                  ₹{total.toLocaleString("en-IN")}
+                                </span>
+                              </li>
+                              <li>Complete the payment</li>
+                            </ol>
+                            <p className="text-xs text-green-600 mt-2 italic">
+                              After payment, enter your UPI reference ID below
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label className="font-sans text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
+                          UPI ID or Transaction Reference *
+                        </Label>
+                        <Input
+                          required
+                          placeholder="yourname@upi or UPI Ref No."
+                          value={payment.upiId ?? ""}
+                          onChange={(e) =>
+                            setPayment((p) => ({ ...p, upiId: e.target.value }))
+                          }
+                          className="border-teal-200 focus:ring-teal-500"
+                          data-ocid="checkout.upi.input"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Supports PhonePe, Google Pay, Paytm, BHIM
+                        </p>
+                      </div>
                     </div>
                   )}
 
@@ -843,7 +883,7 @@ export default function CheckoutPage() {
                 </div>
                 {shipping === 0 && (
                   <p className="text-[10px] text-teal-600">
-                    Free shipping on orders above ₹2,999
+                    Free shipping on orders above ₹2,000
                   </p>
                 )}
                 <Separator className="bg-teal-100" />

@@ -14,6 +14,7 @@ import { useGetProductsByCategory } from "@/hooks/useQueries";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Search, SlidersHorizontal, Sparkles } from "lucide-react";
 import { useState } from "react";
+import sareeBannerImg from "/assets/generated/saree-category.dim_600x400.jpg";
 
 const SUB_CATEGORIES = [
   "All",
@@ -62,7 +63,7 @@ export default function SareesPage() {
       {/* Banner */}
       <section className="relative h-56 md:h-72 overflow-hidden">
         <img
-          src="/assets/generated/saree-category.dim_600x400.jpg"
+          src={sareeBannerImg}
           alt="Sarees Collection"
           loading="lazy"
           className="w-full h-full object-cover"
