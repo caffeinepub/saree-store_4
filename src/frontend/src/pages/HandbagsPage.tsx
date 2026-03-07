@@ -20,7 +20,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useState } from "react";
-import handbagBannerImg from "/assets/generated/handbag-category.dim_600x400.jpg";
 
 export default function HandbagsPage() {
   const _navigate = useNavigate();
@@ -52,7 +51,7 @@ export default function HandbagsPage() {
       {/* Banner */}
       <section className="relative h-56 md:h-72 overflow-hidden">
         <img
-          src={handbagBannerImg}
+          src="/assets/generated/handbag-category.dim_600x400.jpg"
           alt="Handbags Collection"
           loading="lazy"
           className="w-full h-full object-cover"

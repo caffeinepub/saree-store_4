@@ -5,11 +5,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useGetNewArrivals, useGetOnOfferProducts } from "@/hooks/useQueries";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Heart, Quote, Sparkles, Star, Tag } from "lucide-react";
-import handbagCategoryImg from "/assets/generated/handbag-category.dim_600x400.jpg";
-import jewelryCategoryImg from "/assets/generated/jewelry-category.dim_600x400.jpg";
-import sareeCategoryImg from "/assets/generated/saree-category.dim_600x400.jpg";
-import heroBannerImg from "/assets/generated/saree-hero-banner-girl.dim_1400x600.jpg";
-import founderImg from "/assets/uploads/WhatsApp-Image-2026-03-05-at-8.33.24-PM-1.jpeg";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -21,19 +16,19 @@ export default function HomePage() {
     {
       name: "Sarees",
       path: "/sarees",
-      image: sareeCategoryImg,
+      image: "/assets/generated/saree-category.dim_600x400.jpg",
       description: "Silk, Cotton & More",
     },
     {
       name: "Jewelry",
       path: "/jewelry",
-      image: jewelryCategoryImg,
+      image: "/assets/generated/jewelry-category.dim_600x400.jpg",
       description: "Gold, Silver & Gems",
     },
     {
       name: "Handbags",
       path: "/handbags",
-      image: handbagCategoryImg,
+      image: "/assets/generated/handbag-category.dim_600x400.jpg",
       description: "Clutches & Totes",
     },
   ];
@@ -43,7 +38,7 @@ export default function HomePage() {
       {/* Hero Banner — eager load for LCP */}
       <section className="relative h-[520px] md:h-[600px] overflow-hidden">
         <img
-          src={heroBannerImg}
+          src="/assets/generated/saree-hero-banner-girl.dim_1400x600.jpg"
           alt="New Collection 2026"
           loading="eager"
           fetchPriority="high"
@@ -270,7 +265,7 @@ export default function HomePage() {
                 <div className="absolute inset-0 rounded-2xl border-2 border-champagne-300/60 translate-x-3 translate-y-3" />
                 <div className="relative overflow-hidden rounded-2xl shadow-2xl w-full h-full">
                   <img
-                    src={founderImg}
+                    src="/assets/uploads/WhatsApp-Image-2026-03-05-at-8.33.24-PM-1.jpeg"
                     alt="Dalisha.V — Founder of Dali's Boutique"
                     loading="lazy"
                     decoding="async"

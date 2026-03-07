@@ -54,7 +54,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-teal-800 shadow-lg">
       {/* Top announcement bar */}
       <div className="bg-teal-900 text-champagne-300 text-center py-1.5 text-xs tracking-widest uppercase font-sans">
-        Free shipping on orders above ₹2,000 &nbsp;·&nbsp; New Collection 2026
+        Free shipping on orders above ₹2,999 &nbsp;·&nbsp; New Collection 2026
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

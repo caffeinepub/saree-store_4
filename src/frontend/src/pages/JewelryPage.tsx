@@ -20,7 +20,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useState } from "react";
-import jewelryBannerImg from "/assets/generated/jewelry-category.dim_600x400.jpg";
 
 export default function JewelryPage() {
   const _navigate = useNavigate();
@@ -52,7 +51,7 @@ export default function JewelryPage() {
       {/* Banner */}
       <section className="relative h-56 md:h-72 overflow-hidden">
         <img
-          src={jewelryBannerImg}
+          src="/assets/generated/jewelry-category.dim_600x400.jpg"
           alt="Jewelry Collection"
           loading="lazy"
           className="w-full h-full object-cover"
